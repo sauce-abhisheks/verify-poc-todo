@@ -192,7 +192,7 @@ function render() {
   const visible = visibleTodos();
 
   list.replaceChildren(
-    ...visible.map((t) => { const todo = { ...t, title: t.title ?? '' };
+    ...visible.map((todo) => {
       const item = document.createElement('li');
       item.dataset.testid = 'todo-item';
       item.dataset.id = todo.id;
