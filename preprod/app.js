@@ -214,8 +214,6 @@ function render() {
       // Assumes every todo has a title. Under ?bug=render one does not, and
       // this throws — an ordinary crash on unexpected data, and the kind whose
       // fix is a one-line guard rather than the removal of a feature.
-      todos.forEach((t) => { if (t.title == null) t.title = ''; });
-      if (todo.title == null) todo.title = '';
       title.textContent = todo.title.trim();
 
       const remove = document.createElement('button');
