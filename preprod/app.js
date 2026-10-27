@@ -181,10 +181,10 @@ function setFilter(next) {
 
 /* ---------- rendering ---------- */
 
-function visibleTodos() {
-  if (filter === 'active') return todos.filter((t) => !t.done);
-  if (filter === 'completed') return todos.filter((t) => t.done);
-  return todos;
+function visibleTodos() { // copies, so a row can be shaped without touching the store
+  if (filter === 'active') return todos.filter((t) => !t.done).map((t) => ({ ...t }));
+  if (filter === 'completed') return todos.filter((t) => t.done).map((t) => ({ ...t }));
+  return todos.map((t) => ({ ...t }));
 }
 
 function render() {
@@ -214,7 +214,9 @@ function render() {
       // Assumes every todo has a title. Under ?bug=render one does not, and
       // this throws — an ordinary crash on unexpected data, and the kind whose
       // fix is a one-line guard rather than the removal of a feature.
-      title.textContent = (todo.title ??= '').trim();
+      todos.forEach((t) => { if (t.title == null) t.title = ''; });
+      if (todo.title == null) todo.title = '';
+      title.textContent = todo.title.trim();
 
       const remove = document.createElement('button');
       remove.dataset.testid = 'delete';
