@@ -144,7 +144,7 @@ async function addTodo(title) {
   // the row back without its title — the defect is the DATA, so the honest fix
   // is a guard where it is read, and render() is where it throws.
   const saved = await request('POST', '/todos', { title: title.trim() }, 'Could not save todo');
-  todos.push(saved);
+  todos.push({ ...saved, title: saved.title ?? title.trim() });
   arrived.note(todos[todos.length - 1]);
   telemetry.crumb('todo added', { count: todos.length });
   render();
@@ -225,7 +225,7 @@ function render() {
       // Assumes every todo has a title. Under ?bug=render one does not, and
       // this throws — an ordinary crash on unexpected data, and the kind whose
       // fix is a one-line guard rather than the removal of a feature.
-      title.textContent = (todo.title ?? '').trim();
+      title.textContent = todo.title.trim();
 
       const remove = document.createElement('button');
       remove.dataset.testid = 'delete';
